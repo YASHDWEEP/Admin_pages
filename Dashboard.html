@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Winky+Rough:ital,wght@0,300..900;1,300..900&display=swap');
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+      font-family: "Winky Rough", sans-serif;
+    }
+
+    body {
+      height: 100vh;
+      background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+      background-size: 400% 400%;
+      animation: gradientBG 15s ease infinite;
+      padding: 40px;
+      color: #8f0303;
+      overflow-y: scroll;
+      scroll-behavior: smooth;
+    }
+
+    @keyframes gradientBG {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .dashboard-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      background: rgba(255, 255, 255, 0.1);
+      padding: 30px;
+      border-radius: 15px;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 0 30px rgba(0, 0, 0, 0.3);
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 30px;
+      font-size: 56px;
+      font-family: "Winky Rough", sans-serif;
+    }
+
+    .cards {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+      margin-bottom: 30px;
+    }
+
+    .card {
+      flex: 1 1 220px;
+      background: rgba(255, 255, 255, 0.15);
+      padding: 20px;
+      border-radius: 10px;
+      text-align: center;
+      backdrop-filter: blur(5px);
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    }
+
+    .card h3 {
+      margin-bottom: 10px;
+    }
+
+    .nav-links {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+      margin-bottom: 30px;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      background: #fff;
+      padding: 10px 20px;
+      border-radius: 8px;
+      color: #333;
+      transition: 0.3s ease;
+      cursor: pointer;
+    }
+
+    .nav-links a:hover {
+      background: #23d5ab;
+      color: #fff;
+    }
+
+    .section {
+      margin-top: 30px;
+      background: rgba(255, 255, 255, 0.1);
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.2);
+    }
+
+    .section h2 {
+      margin-bottom: 15px;
+    }
+
+    .user-table, .logs, .attendance-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .user-table th, .user-table td,
+    .logs th, .logs td,
+    .attendance-table th, .attendance-table td {
+      padding: 10px;
+      background: rgba(255, 255, 255, 0.2);
+      border: 1px solid rgba(255,255,255,0.3);
+    }
+
+    .logs-list {
+      list-style: none;
+      padding: 0;
+    }
+
+    .logs-list li {
+      padding: 8px;
+      background: rgba(255,255,255,0.15);
+      margin-bottom: 5px;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="dashboard-container">
+    <h1>Welcome to the Admin Dashboard</h1>
+
+    <div class="cards">
+      <div class="card">
+        <h3>Total Users</h3>
+        <p id="totalUsers">0</p>
+      </div>
+      <div class="card">
+        <h3>Active Sessions</h3>
+        <p id="activeSessions">0</p>
+      </div>
+      <div class="card">
+        <h3>Recent Activities</h3>
+        <ul id="recentActivities" style="list-style: none; padding: 0;"></ul>
+      </div>
+    </div>
+
+    <div class="nav-links">
+      <a href="User_Management_Settings.html">User Management</a>
+      <a href="Settings.html">Settings</a>
+      <a href="#attendanceSection">Attendance Report</a>
+      <a href="#detentionSection">Detention List</a>
+      <a href="#" onclick="logout()">Logout</a>
+    </div>
+
+    <div class="section">
+      <h2>Recent Log Entries</h2>
+      <ul class="logs-list" id="logList"></ul>
+    </div>
+
+    <div class="section">
+      <h2>User Table</h2>
+      <table class="user-table">
+        <thead>
+          <tr>
+            <th>User ID</th>
+            <th>Username</th>
+            <th>Email</th>
+            <th>Role</th>
+          </tr>
+        </thead>
+        <tbody id="userTableBody"></tbody>
+      </table>
+    </div>
+
+    <div class="section" id="attendanceSection">
+      <h2>Attendance Report</h2>
+      <table class="attendance-table" id="attendanceTable">
+        <thead>
+          <tr>
+            <th>Student</th>
+            <th>Weekly (%)</th>
+            <th>Monthly (%)</th>
+            <th>Yearly (%)</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+
+    <div class="section" id="detentionSection">
+      <h2>Detention List (Below 75%)</h2>
+      <ul class="logs-list" id="detentionList"></ul>
+    </div>
+  </div>
+
+  <script>
+    const dashboardData = {
+      totalUsers: 124,
+      activeSessions: 27,
+      recentActivities: ["John logged in", "Admin edited settings", "User deleted"],
+      logs: ["User A created", "User B logged out", "Settings updated"],
+      users: [
+        { id: 1, username: "admin", email: "admin@gmail.com", role: "Administrator" },
+        { id: 2, username: "john", email: "john@gmail.com", role: "Editor" },
+        { id: 3, username: "jane", email: "jane@gmail.com", role: "Viewer" },
+      ],
+      attendance: [
+        { name: "Alice", weekly: 85, monthly: 80, yearly: 78 },
+        { name: "Bob", weekly: 60, monthly: 70, yearly: 68 },
+        { name: "Charlie", weekly: 90, monthly: 88, yearly: 92 },
+        { name: "Bharat", weekly: 90, monthly: 78, yearly: 75 },
+        { name: "Dweep", weekly: 70, monthly: 59, yearly: 56 },
+        { name: "Swarit", weekly: 75, monthly: 69, yearly: 57 },
+        { name: "Chetan", weekly: 79, monthly: 62, yearly: 63 },
+        { name: "Chaitanya", weekly: 75, monthly: 62, yearly: 93 }
+      ]
+    };
+
+    document.getElementById("totalUsers").textContent = dashboardData.totalUsers;
+    document.getElementById("activeSessions").textContent = dashboardData.activeSessions;
+
+    dashboardData.recentActivities.forEach(activity => {
+      const li = document.createElement("li");
+      li.textContent = activity;
+      document.getElementById("recentActivities").appendChild(li);
+    });
+
+    dashboardData.logs.forEach(log => {
+      const li = document.createElement("li");
+      li.textContent = log;
+      document.getElementById("logList").appendChild(li);
+    });
+
+    dashboardData.users.forEach(user => {
+      const row = document.createElement("tr");
+      row.innerHTML = `<td>${user.id}</td><td>${user.username}</td><td>${user.email}</td><td>${user.role}</td>`;
+      document.getElementById("userTableBody").appendChild(row);
+    });
+
+    dashboardData.attendance.forEach(student => {
+      const row = document.createElement("tr");
+      row.innerHTML = `<td>${student.name}</td><td>${student.weekly}%</td><td>${student.monthly}%</td><td>${student.yearly}%</td>`;
+      document.querySelector("#attendanceTable tbody").appendChild(row);
+
+      const average = (student.weekly + student.monthly + student.yearly) / 3;
+      if (average < 75) {
+        const li = document.createElement("li");
+        li.textContent = `${student.name} - ${average.toFixed(2)}% attendance`;
+        document.getElementById("detentionList").appendChild(li);
+      }
+    });
+    function logout() {
+      // You can clear session or storage if needed here
+      alert("You have been logged out.");
+      window.location.href = "Admin_login.html"; // change this to your actual login page filename
+    }
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Management Settings</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+      background-size: 400% 400%;
+      animation: gradientBG 15s ease infinite;
+    }
+
+    @keyframes gradientBG {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .settings-box {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 40px;
+      border-radius: 15px;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 0 30px rgba(0, 0, 0, 0.3);
+      width: 450px;
+      text-align: center;
+      color: #fff;
+    }
+
+    .settings-box h2 {
+      margin-bottom: 20px;
+    }
+
+    .input-box {
+      position: relative;
+      margin-bottom: 20px;
+      text-align: left;
+    }
+
+    .input-box label {
+      display: block;
+      margin-bottom: 5px;
+      color: #fff;
+    }
+
+    .input-box input, .input-box select {
+      width: 100%;
+      padding: 10px;
+      border: none;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.2);
+      color: #fff;
+      font-size: 14px;
+      outline: none;
+    }
+
+    .input-box input::placeholder {
+      color: #ddd;
+    }
+
+    .settings-box button {
+      margin-top: 15px;
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      background: #fff;
+      color: #333;
+      font-size: 16px;
+      cursor: pointer;
+      transition: 0.3s ease;
+    }
+
+    .settings-box button:hover {
+      background: #23d5ab;
+      color: white;
+    }
+    #role{
+      color: black;
+    }
+    .nav-links {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+      margin-bottom: 30px;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      background: #fff;
+      padding: 10px 20px;
+      border-radius: 8px;
+      color: #333;
+      transition: 0.3s ease;
+    }
+
+    .nav-links a:hover {
+      background: #23d5ab;
+      color: #fff;
+    }
+
+  </style>
+</head>
+<body>
+
+  <div class="settings-box">
+    <h2>User Management Settings</h2>
+    <form id="settingsForm">
+      <div class="input-box">
+        <label for="username">Username</label>
+        <input type="text" id="username" placeholder="Enter username" required>
+      </div>
+
+      <div class="input-box">
+        <label for="email">Email</label>
+        <input type="email" id="email" placeholder="Enter email" required>
+      </div>
+
+      <div class="input-box">
+        <label for="role">Role</label>
+        <select id="role" required>
+          <option value="">Select role</option>
+          <option value="admin">Admin</option>
+          <option value="editor">Editor</option>
+          <option value="viewer">Viewer</option>
+        </select>
+      </div>
+
+      <a href="Dashboard.html" class="nav-links"> SAVE </a>
+    </form>
+  </div>
+
+  <script>
+    const form = document.getElementById('settingsForm');
+
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const username = document.getElementById('username').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const role = document.getElementById('role').value;
+
+      if (!username || !email || !role) {
+        alert('Please fill in all fields correctly.');
+        return;
+      }
+
+      alert(`User Settings Saved:\nUsername: ${username}\nEmail: ${email}\nRole: ${role}`);
+      // Here, you could send data to a server if needed
+    });
+  </script>
+
+</body>
+</html>

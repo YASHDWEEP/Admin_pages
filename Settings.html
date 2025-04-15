@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Settings Page</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+    body {
+      height: 100vh;
+      background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+      background-size: 400% 400%;
+      animation: gradientBG 15s ease infinite;
+      padding: 40px;
+      color: #fff;
+    }
+    @keyframes gradientBG {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    .container {
+      max-width: 900px;
+      margin: auto;
+      background: rgba(255, 255, 255, 0.1);
+      padding: 30px;
+      border-radius: 15px;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    .section {
+      margin-bottom: 30px;
+    }
+    .section h2 {
+      margin-bottom: 15px;
+    }
+    label {
+      display: block;
+      margin-bottom: 10px;
+    }
+    input, select, button {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border: none;
+      border-radius: 5px;
+    }
+    button {
+      background: #23d5ab;
+      color: #fff;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    button:hover {
+      background: #1ca88e;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Settings</h1>
+
+    <div class="section">
+      <h2>Profile Settings</h2>
+      <label>Username: <input type="text" id="username"></label>
+      <label>Email: <input type="email" id="email"></label>
+      <label>Password: <input type="password" id="password"></label>
+      <button onclick="saveProfile()">Save Profile</button>
+    </div>
+
+    <div class="section">
+      <h2>System Preferences</h2>
+      <label>Theme:
+        <select id="themeSelect">
+          <option value="light">Light</option>
+          <option value="dark">Dark</option>
+        </select>
+      </label>
+      <label>Language:
+        <select id="languageSelect">
+          <option value="en">English</option>
+          <option value="hi">Hindi</option>
+          <option value="hi">Marathi</option>
+        </select>
+      </label>
+      <label> <select name="timeZone " id="timeZone">
+        <option value="America/New_York">America/New_York</option>
+        <option value="India">India</option>
+        <option value="New_York">New_York</option>
+        <option value="China">China</option>
+        <option value="Soudi_Arab">Soudi_Arab</option>
+        <option value="South_Africa">South_Africa</option>
+      </select>
+    </label>
+      <button onclick="savePreferences()">Save Preferences</button>
+    </div>
+
+    <div class="section">
+      <h2>Security Settings</h2>
+      <label>Enable 2FA:
+        <select id="twofa">
+          <option value="yes">Yes</option>
+          <option value="no">No</option>
+        </select>
+      </label>
+      <button onclick="updateSecurity()">Update Security</button>
+    </div>
+
+    <div class="section">
+      <h2>Notifications</h2>
+      <label><input type="checkbox" id="emailNotif"> Email Alerts</label>
+      <label><input type="checkbox" id="weeklyReport"> Weekly Reports</label>
+      <button onclick="updateNotifications()">Save Notification Settings</button>
+    </div>
+
+    <div class="section">
+      <h2>Reset Options</h2>
+      <button onclick="resetSettings()">Reset All to Default</button>
+    </div>
+  </div>
+
+  <script>
+    function saveProfile() {
+      alert("Profile saved: " + document.getElementById('username').value);
+    }
+    function savePreferences() {
+      alert("Preferences saved: " + document.getElementById('themeSelect').value);
+    }
+    function updateSecurity() {
+      alert("Security settings updated: 2FA - " + document.getElementById('twofa').value);
+    }
+    function updateNotifications() {
+      const email = document.getElementById('emailNotif').checked;
+      const weekly = document.getElementById('weeklyReport').checked;
+      alert(`Notifications saved. Email: ${email}, Weekly: ${weekly}`);
+    }
+    function resetSettings() {
+      if (confirm("Are you sure you want to reset all settings?")) {
+        document.querySelectorAll('input, select').forEach(el => {
+          if (el.type === 'checkbox') el.checked = false;
+          else el.value = '';
+        });
+        alert("Settings have been reset.");
+      }
+    }
+  </script>
+</body>
+</html>
